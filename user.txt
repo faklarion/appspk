@@ -1,0 +1,29 @@
+USER
+
+admin :
+admin@gmail.com
+password : password
+
+operasional :
+operasional@gmail.com
+password : password
+
+vicoperasional :
+vicoperasional@gmail.com
+password : password
+
+kasir :
+kasir@gmail.com
+password : password
+
+piutang :
+piutang@gmail.com
+password : password
+
+direksi 1 :
+direksi1@gmail.com
+password : password
+
+direksi 2 :
+direksi2@gmail.com
+password : password

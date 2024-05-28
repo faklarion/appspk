@@ -1,0 +1,613 @@
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<?php 
+function rupiah($angka){	
+	$hasil_rupiah = "Rp " . number_format($angka,0,',','.');
+	return $hasil_rupiah;
+}
+
+function ribuan($angka){	
+	$hasil_rupiah = number_format($angka,0,',','.');
+	return $hasil_rupiah;
+}
+?>
+<?php
+function tgl_indo($tanggal){
+	return date("d-m-Y", strtotime($tanggal));
+}
+?>
+<style> 
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+.btn-circle.btn-xl  {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 35px;
+}
+
+.btn-float{
+    position: fixed;
+    right: 37px;
+    bottom:100px;
+}
+
+.btn-lateral{
+    background-color: #008ECF;
+    color: white;
+    margin: 10px;
+}
+
+.btn-filter
+{
+    background-color: #283896;
+    color: #FFF;
+}
+
+ .table_wrapper{
+    display: block;
+    overflow-x: auto;
+    overflow-y: scroll;
+    height: 100%;
+    white-space: nowrap;
+    width: 100%;
+ }
+    .table_wrapper th {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 999;
+    background-color: #D9DDDC;
+    
+    }
+
+    .table_wrapper tfoot {
+    position: sticky;
+    inset-block-end: 0;
+    }
+
+</style>
+<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+
+<div class="content-wrapper">
+    
+    <section class="content">
+       
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-warning box-solid">
+    
+                    <div class="box-header">
+                        <h3 class="box-title">SAMPAH INDUK SPK JAKARTA</h3>
+                    </div>
+                    
+        <div class="box-body">
+            <div class='row'>
+            <div class='col-md-9'>
+                
+
+        </div>
+            <div class='col-md-3'>
+            <form action="<?php echo site_url('tbl_spk_jakarta/index'); ?>" class="form-inline" method="get">
+                    <div class="input-group">
+                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Cari..." class="form-control">                        
+                    </div>
+                </form>
+            </div>
+            </div>
+        
+   
+        <div class="row" style="margin-bottom: 10px">
+            <div class="col-md-4 text-center">
+                <div style="margin-top: 8px" id="message">
+                    <?php echo $this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''; ?>
+                </div>
+            </div>
+        </div>
+
+       
+       
+        <h4><?php echo "Filter : $filter"; ?></h4>
+        <table class="table table-bordered table_wrapper sortable" style="margin-bottom: 10px" id="dataTable">
+            <tr>
+                <th>No</th>
+                <th>No PO</th>
+                <th>No SPK</th>
+                <th>Tanggal SPK</th>
+                <th>Pelaksana</th>
+                <th>Vendor</th>
+                <th>Nama Kapal</th>
+                <th>Nilai SPK</th>
+                <th>Total Payment</th>
+                <th>Sisa Payment</th>
+                <th>DPP</th>
+                <th>Profit 1</th>
+                <th>Profit 2</th>
+                <th>Tanggal Debit Nota</th>
+                <th>Lama Pengerjaan</th>
+                <th>Update</th>
+                <th>Simbol</th>
+                <th>Sub SPK</th>
+                <th>Action</th>
+                <!-- <th>Detail Debit</th>
+                <th>Print Pekerjaan</th> -->
+            </tr><?php
+            
+            foreach ($tbl_spk_jakarta_data as $tbl_spk_jakarta) :
+                $noSPK = $tbl_spk_jakarta->id_spk_jakarta;
+                ?>
+                <tr>
+			<td width="10px"><?php echo ++$start ?></td>
+			<td><?php echo $tbl_spk_jakarta->no_po ?></td>
+			<td><?php echo $tbl_spk_jakarta->no_spk ?></td>
+			<td><?php echo tgl_indo($tbl_spk_jakarta->tgl_spk) ?></td>
+			<td><?php echo $tbl_spk_jakarta->pelaksana ?></td>
+            <td><?php echo $tbl_spk_jakarta->nama_vendor ?></td>
+			<td><?php echo $tbl_spk_jakarta->nama_kapal ?></td>
+            <td>
+                <?php 
+                    $listSpk = $this->Tbl_spk_jakarta_model->get_nilai_spk($tbl_spk_jakarta->id_spk_jakarta);
+                    $nilaiBaru = $listSpk->total;
+                    echo rupiah($nilaiBaru);
+                ?>
+            </td>
+			<td>
+                <?php 
+                    $listSub = $this->Tbl_sub_jakarta_model->get_total_payment($tbl_spk_jakarta->id_spk_jakarta);
+                    $totalBaru = $listSub->total;
+                    echo rupiah($totalBaru);
+                ?>
+            </td>
+            <td>
+                <?php 
+                echo rupiah($nilaiBaru - $totalBaru); 
+                        $totalSisa = 0;
+                        $totalSisa += ($nilaiBaru - $totalBaru);
+                        
+                ?>
+            </td>
+            <td>
+                <?php 
+                    $listSub = $this->Tbl_sub_jakarta_model->get_total_dpp($tbl_spk_jakarta->id_spk_jakarta);
+                    $dppBaru = $listSub->total;
+                    echo rupiah($dppBaru);
+                ?>
+            </td>
+            <td>
+                <?php echo rupiah($dppBaru - $nilaiBaru); 
+                ?>
+            </td>
+            <td>
+                <?php echo rupiah($dppBaru - $totalBaru); 
+                ?>
+            </td>
+          
+            <td>
+                <?php 
+                    $tgl_sub = $this->Tbl_sub_jakarta_model->get_tgl_nota($tbl_spk_jakarta->id_spk_jakarta);
+                    if($tgl_sub) {
+                        $tglBaru = $tgl_sub->tanggal;
+                        if($tglBaru == NULL) {
+                            echo 'Belum Ada';
+                        } else {
+                        echo tgl_indo($tglBaru);
+                        }
+                    } else {
+                       echo 'Belum Ada';
+                    }
+                ?>
+            </td>
+            <td>
+                <?php 
+                if($tgl_sub) {
+                $tgl1 = new DateTime($tbl_spk_jakarta->tgl_spk);
+                $tgl2 = new DateTime($tgl_sub->tanggal);
+                @$jarak = $tgl2->diff($tgl1);
+                if($tglBaru == NULL) {
+                    echo '0 Hari';
+                } else {
+                    echo "$jarak->d Hari";
+                }
+                }
+
+                if(@$jarak->d <= 29) {
+                    echo ' - <button class="btn btn-success" type="button"></button>';
+                } elseif (@$jarak->d >= 30) {
+                    echo ' - <button class="btn btn-warning" type="button"></button>';
+                } elseif (@$jarak->d >= 40) {
+                    echo ' - <button class="btn btn-danger" type="button"></button>';
+                } else {
+                    echo $hijau;
+                }
+                ?>
+            </td>
+            <td><?php echo $tbl_spk_jakarta->full_name ?> - <?php echo $tbl_spk_jakarta->last_update ?> - 
+            <?php if(($tbl_spk_jakarta->images == NULL) || ($tbl_spk_jakarta->images == '')) { ?>
+                <img src="<?php echo base_url() ?>assets/foto_profil/ppkosong.jpg" class="user-image" alt="User Image" width="50px">
+            <?php } else { ?>
+            <img src="<?php echo base_url() ?>assets/foto_profil/<?php echo $tbl_spk_jakarta->images; ?> " class="user-image" alt="User Image" width="50px">
+            <?php } ?>
+            </td>
+			<td>
+                <?php 
+                if($nilaiBaru == $totalBaru) {
+                    echo '<p align="center"><button class="btn btn-success" type="button"></button>';
+                } elseif ($nilaiBaru > $totalBaru) {
+                    echo '<p align="center"><button class="btn btn-warning" type="button"></button>';
+                } elseif ($nilaiBaru < $totalBaru) {
+                    echo '<p align="center"><button class="btn btn-danger" type="button"></button>';
+                }
+                ?>
+            </td>
+            <td>
+                <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#modal<?php echo $noSPK ?>">
+                            Lihat SUB SPK
+                </button>
+            </td>
+            <td style="text-align:center" width="200px">
+                
+                <?php 
+
+                if($this->session->userdata('id_user_level') == 6) {
+				    echo anchor(site_url('tbl_spk_jakarta/restore_sampah/'.$tbl_spk_jakarta->id_spk_jakarta),'<i class="fa fa-recycle" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+                    echo ' ';
+                    echo anchor(site_url('tbl_spk_jakarta/delete/'.$tbl_spk_jakarta->id_spk_jakarta),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+                }
+                ?>
+			</td>
+            <!-- <td>
+                <?php 
+                if(($this->session->userdata('id_user_level') != 2)) {
+                echo '<p>';
+                echo anchor(site_url('tbl_spk_jakarta/lihat_debit/'.$tbl_spk_jakarta->id_spk_jakarta),'<i class="fa fa-eye" aria-hidden="true"> LIHAT TOTAL DN</i>','class="btn btn-warning btn-sm"'); 
+                }
+                ?>
+            </td> -->
+            <!-- <td>
+                <?php 
+                echo '<p>';
+                echo anchor(site_url('tbl_spk_jakarta/print_kerja/'.$tbl_spk_jakarta->id_spk_jakarta),'<i class="fa fa-print" aria-hidden="true"> Print Pekerjaan</i>','class="btn btn-primary btn-sm" target="_blank"'); 
+                ?>
+            </td> -->
+            
+		</tr>
+                <?php
+            endforeach;
+            ?>
+            <!-- <tfoot>
+            <tr>
+                <th>Total</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>
+                    <?php 
+                            $listSpk = $this->Tbl_spk_jakarta_model->get_total_nilai_spk();
+                            $nilaiBaru = $listSpk->total;
+                            echo rupiah($nilaiBaru);
+                    ?>
+                </th>
+                <th>
+                    <?php 
+                            $listSub = $this->Tbl_sub_jakarta_model->get_payment();
+                            $totalBaru = $listSub->total;
+                            echo rupiah($totalBaru);    
+                    ?>
+                </th>
+                <th><?php echo rupiah($nilaiBaru -  $totalBaru); ?></th>
+                <th>
+                    <?php  
+                     $listSub = $this->Tbl_sub_jakarta_model->get_dpp();
+                     $dppBaru = $listSub->total;
+                     echo rupiah($dppBaru);
+                    ?>
+            
+                </th>
+                <th>
+                <?php echo rupiah($dppBaru - $nilaiBaru); 
+                ?>
+                </th>
+                <th>
+                    <?php echo rupiah($dppBaru - $totalBaru); 
+                    ?>
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </tfoot>  -->
+            
+        </table>
+        <h4>
+            <b>Deskripsi Simbol</b>
+        </h4>
+        <p>
+            <b>Hijau</b> : Pembayaran Pas/sesuai
+        </p>
+        <p>
+            <b>Kuning</b> : Pembayaran Kurang/belum dibayarkan
+        </p>
+        <p>
+            <b>Merah</b> : Pembayaran berlebihan
+        </p>
+        <div class="row">
+            <div class="col-md-6">
+                
+	    </div>
+            
+        </div>
+        </div>
+                    </div>
+            </div>
+            </div>
+    </section>
+</div>
+
+<!-- MODAL SUB -->
+<?php
+foreach ($tbl_spk_jakarta_data as $row) : ?>
+  <div class="modal fade bd-example-modal-xl" id="modal<?php echo $row->id_spk_jakarta ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="width:100%;"  >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Lihat Sub SPK</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" >
+          <!-- FORM -->
+          <?php $listSub = $this->Tbl_sub_jakarta_model->get_by_id($row->id_spk_jakarta); ?>
+          <table class="table table-bordered table_wrapper sortable" style="margin-bottom: 10px; align: center">
+            <tr>
+                <th>No</th>
+                <th>No PO</th>
+                <th>No SPK</th>
+                <th>Tanggal SPK</th>
+                <th>Pelaksana</th>
+                <th>Nama Kapal</th>
+                <th>Nilai SPK</th>
+                <th>DPP</th>
+                <th>Tanggal Debit Nota</th>
+                <th>Total Payment</th>
+                <th>Sisa Payment</th>
+                <th>Update</th>
+                <th>Unit Angkut</th>
+                <th>Tanggal Stuf</th>
+                <th>Tanggal Selesai Stuf</th>
+                <th>Etd Kapal</th>
+                <th>Eta Kapal</th>
+                <th>Tanggal Mulai Doring</th>
+                <th>Tanggal Selesai Doring</th>
+                <th>Tanggal Bap</th>
+                <th>QTY</th>
+                <th>Satuan</th>
+                <th>Jumlah Dikerjakan</th>
+                <th>Sisa Belum</th>
+                <th>Status</th>
+                <th>Keterangan</th>
+                <th>Lama Pengerjaan</th>
+                <th>Last Update Pekerjaan</th>
+                <!-- <th>Action</th> -->
+            </tr>
+            <?php
+            $mulai = 0;
+            foreach ($listSub as $tbl_sub_jakarta) :
+                ?>
+                <tr>
+			<td width="10px"><?php echo ++$mulai ?></td>
+			<td><?php echo $tbl_sub_jakarta->no_po ?></td>
+			<td><?php echo $tbl_sub_jakarta->no_spk ?> <?php echo $tbl_sub_jakarta->kode_sub ?></td>
+			<td><?php echo tgl_indo($tbl_sub_jakarta->tgl_spk) ?></td>
+			<td><?php echo $tbl_sub_jakarta->pelaksana ?></td>
+			<td><?php echo $tbl_sub_jakarta->nama_kapal ?></td>
+			<td><?php echo rupiah($tbl_sub_jakarta->nilai_spk) ?></td>
+            <td>
+                <?php 
+                    $listSub = $this->Tbl_sub_jakarta_model->get_total_dpp_sub($tbl_sub_jakarta->id_sub_jakarta);
+                    $dppBaruSub = $listSub->total;
+                    echo rupiah($dppBaruSub);
+                ?>
+            </td>
+            <td><?php 
+            if($tbl_sub_jakarta->tgl_debit_nota==NULL) {
+                echo 'Belum Ada';
+            } else {
+                echo tgl_indo($tbl_sub_jakarta->tgl_debit_nota);
+            } ?>
+            </td>
+			<td>
+                <?php
+                 $listSub = $this->Tbl_sub_jakarta_model->get_total_payment_sub($tbl_sub_jakarta->id_sub_jakarta);
+                 $totalBaru = $listSub->total;
+                 echo rupiah($totalBaru);
+                ?>
+             </td>
+            <td><?php echo rupiah($tbl_sub_jakarta->nilai_spk - $totalBaru) ?></td>
+            <td><?php echo $tbl_sub_jakarta->full_name ?> - <?php echo $tbl_sub_jakarta->last_update ?> -  
+            <?php if(($tbl_sub_jakarta->images == NULL) || ($tbl_sub_jakarta->images == '')) { ?>
+                <img src="<?php echo base_url() ?>assets/foto_profil/ppkosong.jpg" class="user-image" alt="User Image" width="50px">
+            <?php } else { ?>
+            <img src="<?php echo base_url() ?>assets/foto_profil/<?php echo $tbl_sub_jakarta->images; ?> " class="user-image" alt="User Image" width="50px">
+            <?php } ?>
+            </td>
+            <td><?php echo $tbl_sub_jakarta->unit_angkut ?></td>
+            <td>
+                <?php 
+            if($tbl_sub_jakarta->tgl_stuf ==  NULL) {
+                echo 'Belum Ada'; 
+            } else {
+                echo $tbl_sub_jakarta->tgl_stuf;
+            }
+                ?>
+            </td>
+            <td>
+                <?php 
+            if($tbl_sub_jakarta->tgl_selesai_stuf ==  NULL) {
+                echo 'Belum Ada'; 
+            } else {
+                echo $tbl_sub_jakarta->tgl_selesai_stuf;
+            }
+                ?>
+            </td>
+            <td>
+                <?php 
+            if($tbl_sub_jakarta->etd_kapal ==  NULL) {
+                echo 'Belum Ada'; 
+            } else {
+                echo $tbl_sub_jakarta->etd_kapal;
+            }
+                ?>
+            </td>
+            <td>
+                <?php 
+            if($tbl_sub_jakarta->eta_kapal ==  NULL) {
+                echo 'Belum Ada'; 
+            } else {
+                echo $tbl_sub_jakarta->eta_kapal;
+            }
+                ?>
+            </td>
+            <td>
+                <?php 
+            if($tbl_sub_jakarta->tgl_mulai_doring ==  NULL) {
+                echo 'Belum Ada'; 
+            } else {
+                echo $tbl_sub_jakarta->tgl_mulai_doring;
+            }
+                ?>
+            </td>
+            <td>
+                <?php 
+            if($tbl_sub_jakarta->tgl_selesai_doring ==  NULL) {
+                echo 'Belum Ada'; 
+            } else {
+                echo $tbl_sub_jakarta->tgl_selesai_doring;
+            }
+                ?>
+            </td>
+            <td>
+                <?php 
+            if($tbl_sub_jakarta->tgl_bap ==  NULL) {
+                echo 'Belum Ada'; 
+            } else {
+                echo $tbl_sub_jakarta->tgl_bap;
+            }
+                ?>
+            </td>
+			<td><?php echo ribuan($tbl_sub_jakarta->qty) ?></td>
+            <td><?php echo $tbl_sub_jakarta->satuan ?></td>
+            <td><?php echo ribuan($tbl_sub_jakarta->jumlah_dikerjakan) ?></td>
+			<td><?php echo ribuan($tbl_sub_jakarta->sisa_belum) ?></td>
+			<td><?php echo $tbl_sub_jakarta->status ?></td>
+			<td><?php echo $tbl_sub_jakarta->keterangan ?></td>
+            <td>
+                <?php 
+                if($tgl_sub) {
+                $tgl1 = new DateTime($tbl_sub_jakarta->tgl_bap);
+                $tgl2 = new DateTime($tbl_sub_jakarta->tgl_mulai_doring);
+                $jarak = $tgl2->diff($tgl1);
+                echo "$jarak->d Hari";
+                } else {
+                    echo '0 Hari';
+                }
+                ?>
+            </td>
+            <td><?php echo $tbl_sub_jakarta->last_kerja ?></td>
+            <!-- <td style="text-align:center" width="200px">
+                <?php 
+				echo anchor(site_url('tbl_sub_jakarta/read/'.$tbl_sub_jakarta->id_sub_jakarta),'<i class="fa fa-eye" aria-hidden="true"> Lihat Detail</i>','class="btn btn-danger btn-sm"'); 
+				echo '  ';
+                if(($this->session->userdata('id_user_level') != 2)) {
+                echo anchor(site_url('tbl_sub_jakarta/lihat_waiting/'.$tbl_sub_jakarta->id_sub_jakarta),'<i class="fa fa-eye" aria-hidden="true"> Lihat Detail Payment</i>','class="btn btn-primary btn-sm"'); 
+				echo '  ';
+                }
+                if($this->session->userdata('id_user_level') == 6) { 
+                echo anchor(site_url('tbl_sub_jakarta/delete_from_spk/'.$tbl_sub_jakarta->id_sub_jakarta),'<i class="fa fa-trash" aria-hidden="true"> Hapus SUB</i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+				echo '  '; 
+                }
+                if(($this->session->userdata('id_user_level') != 7) && ($this->session->userdata('id_user_level') != 5) && ($this->session->userdata('id_user_level') != 3)) {
+                    if (($this->session->userdata('id_user_level') != 2) && ($this->session->userdata('id_user_level') != 4)) {
+                    echo anchor(site_url('tbl_sub_jakarta/update_sub/'.$tbl_sub_jakarta->id_sub_jakarta),'<i class="fa fa-edit" aria-hidden="true"> Edit SUB</i>','class="btn btn-warning btn-sm"'); 
+				    echo '  '; 
+                    }
+                    echo anchor(site_url('tbl_sub_jakarta/update_pekerjaan_new/'.$tbl_sub_jakarta->id_sub_jakarta),'<i class="fa fa-plus" aria-hidden="true"> Update Pekerjaan</i>','class="btn btn-primary btn-sm"'); 
+                    echo '  '; 
+                    echo anchor(site_url('tbl_sub_jakarta/detail_pekerjaan/'.$tbl_sub_jakarta->id_sub_jakarta),'<i class="fa fa-eye" aria-hidden="true"> Riwayat Pekerjaan</i>','class="btn btn-success btn-sm"'); 
+                    echo ' ';
+                }
+				?>
+			</td> -->
+		</tr>
+                <?php
+            endforeach;
+            ?>
+        </table>
+       
+        </div>
+        
+      </div>
+      
+    </div>
+    
+  </div>
+<?php endforeach; ?>
+<!-- END MODAL SUB -->
+<script>
+  // Declare variables
+  function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("dataTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    const tableData = tr[i].getElementsByTagName("td");
+    let allTextContent = '';
+    for (let ind = 0; ind < tableData.length; ind++) {
+        allTextContent += tableData[ind].innerText;
+    }
+    
+    if (allTextContent) {
+      if (allTextContent.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"></script>
+<script type="text/javascript"> 
+ $(document).ready(function() {
+ $('#id_vendor').select2();
+ });
+ 
+</script>
