@@ -1,0 +1,5 @@
+CREATE EVENT hapus_spk
+ON SCHEDULE
+EVERY 12 HOUR
+DO
+DELETE FROM tbl_spk_banjarmasin WHERE tanggal_hapus < NOW() - INTERVAL 1 DAY;
