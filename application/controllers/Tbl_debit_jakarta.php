@@ -243,6 +243,7 @@ class Tbl_debit_jakarta extends CI_Controller
         
         $data = array(
             'hapus' => 1,
+            'tanggal_hapus' => date('Y-m-d'),
         );
 
         if ($row) {
@@ -261,6 +262,7 @@ class Tbl_debit_jakarta extends CI_Controller
         
         $data = array(
             'hapus' => 0,
+            'tanggal_hapus' => NULL,
         );
 
         if ($row) {

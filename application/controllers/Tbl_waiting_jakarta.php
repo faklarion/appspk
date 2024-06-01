@@ -191,6 +191,7 @@ class Tbl_waiting_jakarta extends CI_Controller
        
             $data = array(
                 'hapus' => 0,
+                'tanggal_hapus' => NULL,
             );
             $this->Tbl_waiting_jakarta_model->update($id, $data);
             $this->session->set_flashdata('message', 'Restore Record Success');
@@ -203,6 +204,7 @@ class Tbl_waiting_jakarta extends CI_Controller
 
         $data = array(
             'hapus' => 1,
+            'tanggal_hapus' => date('Y-m-d'),
 	    );
 
         if ($row) {

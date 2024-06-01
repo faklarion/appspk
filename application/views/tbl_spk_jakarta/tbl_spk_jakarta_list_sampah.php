@@ -94,7 +94,7 @@ function tgl_indo($tanggal){
                 <div class="box box-warning box-solid">
     
                     <div class="box-header">
-                        <h3 class="box-title">SAMPAH INDUK SPK JAKARTA</h3>
+                        <h3 class="box-title">SAMPAH INDUK SPK jakarta</h3>
                     </div>
                     
         <div class="box-body">
@@ -143,6 +143,7 @@ function tgl_indo($tanggal){
                 <th>Lama Pengerjaan</th>
                 <th>Update</th>
                 <th>Simbol</th>
+                <th>Tanggal Hapus</th>
                 <th>Sub SPK</th>
                 <th>Action</th>
                 <!-- <th>Detail Debit</th>
@@ -254,6 +255,9 @@ function tgl_indo($tanggal){
                     echo '<p align="center"><button class="btn btn-danger" type="button"></button>';
                 }
                 ?>
+            </td>
+            <td>
+                <?php echo tgl_indo($tbl_spk_jakarta->tanggal_hapus)?>
             </td>
             <td>
                 <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#modal<?php echo $noSPK ?>">
@@ -412,6 +416,7 @@ foreach ($tbl_spk_jakarta_data as $row) : ?>
                 <th>Keterangan</th>
                 <th>Lama Pengerjaan</th>
                 <th>Last Update Pekerjaan</th>
+                
                 <!-- <th>Action</th> -->
             </tr>
             <?php
@@ -538,6 +543,7 @@ foreach ($tbl_spk_jakarta_data as $row) : ?>
                 ?>
             </td>
             <td><?php echo $tbl_sub_jakarta->last_kerja ?></td>
+            
             <!-- <td style="text-align:center" width="200px">
                 <?php 
 				echo anchor(site_url('tbl_sub_jakarta/read/'.$tbl_sub_jakarta->id_sub_jakarta),'<i class="fa fa-eye" aria-hidden="true"> Lihat Detail</i>','class="btn btn-danger btn-sm"'); 
