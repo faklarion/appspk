@@ -133,7 +133,7 @@ function tgl_indo($tanggal){
 
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-12 text-center">
-                <div style="margin-top: 8px" id="message">
+                <div style="margin-top: 8px" id="message" class="table-responsive">
                    <table class="table table-bordered">
                         <tr>
                             <td>
