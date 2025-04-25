@@ -20,7 +20,7 @@ function tgl_indo($tanggal){
 </script>
 <html>
     <head>
-        <title>harviacode.com - codeigniter crud generator</title>
+        <title>PT. GLM - Laporan SPK</title>
         <link rel="stylesheet" href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css') ?>"/>
         <style>
             .word-table {

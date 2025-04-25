@@ -431,6 +431,7 @@ function tgl_indo($tanggal){
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
                 <th>
                     <?php 
                             $listSpk = $this->Tbl_spk_banjarmasin_model->get_total_nilai_spk();
