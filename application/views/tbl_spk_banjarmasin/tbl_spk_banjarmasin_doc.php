@@ -343,7 +343,7 @@ function tgl_indo($tanggal){
             </tr>
             <tr>
                 <th>
-                    <?php echo 'Total Profit 1 : '.rupiah($dppBaru - $totalBaru).''; 
+                    <?php echo 'Total Profit 2 : '.rupiah($dppBaru - $totalBaru).''; 
                     ?>
                 </th>
             </tr>    
