@@ -20,7 +20,7 @@ function tgl_indo($tanggal){
 </script>
 <html>
     <head>
-        <title>PT. GLM - Laporan SPK</title>
+        <title>PT. Barokah Langgeng Abadi - Laporan SPK</title>
         <link rel="stylesheet" href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css') ?>"/>
         <style>
             .word-table {

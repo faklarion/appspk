@@ -156,7 +156,7 @@ function tgl_indo($tanggal){
 				echo '  '; 
                  }
                 if($this->session->userdata('id_user_level') == 6) {
-				echo anchor(site_url('tbl_waiting_banjarmasin/delete_sampah/'.$tbl_sub_jakarta->id_waiting_jakarta),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+				echo anchor(site_url('tbl_waiting_jakarta/delete_sampah/'.$tbl_sub_jakarta->id_waiting_jakarta),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
                 }
                 ?>
 			</td>
