@@ -10,6 +10,7 @@ class Tbl_debit_jakarta extends CI_Controller
         parent::__construct();
         //is_login();
         $this->load->model('Tbl_debit_jakarta_model');
+        $this->load->model('Tbl_payment_jakarta_model');
         $this->load->model('Tbl_sub_jakarta_model');
         $this->load->model('Tbl_spk_jakarta_model');
         $this->load->library('form_validation');
@@ -32,6 +33,7 @@ class Tbl_debit_jakarta extends CI_Controller
         $config['page_query_string'] = FALSE;
         $config['total_rows'] = $this->Tbl_debit_jakarta_model->total_rows($q);
         $tbl_debit_jakarta = $this->Tbl_debit_jakarta_model->get_all();
+        $tbl_payment_jakarta = $this->Tbl_payment_jakarta_model->get_all();
         $no_spk = $this->Tbl_debit_jakarta_model->get_all_induk();
         $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin pull-right">';
         $config['full_tag_close'] = '</ul>';
@@ -40,6 +42,7 @@ class Tbl_debit_jakarta extends CI_Controller
 
         $data = array(
             'tbl_debit_jakarta_data' => $tbl_debit_jakarta,
+            'tbl_payment_jakarta_data' => $tbl_payment_jakarta,
             'no_spk_data' => $no_spk,
             'q' => $q,
             'pagination' => $this->pagination->create_links(),

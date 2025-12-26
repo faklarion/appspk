@@ -10,6 +10,7 @@ class Tbl_debit_banjarmasin extends CI_Controller
         parent::__construct();
         //is_login();
         $this->load->model('Tbl_debit_banjarmasin_model');
+        $this->load->model('Tbl_payment_banjarmasin_model');
         $this->load->model('Tbl_sub_banjarmasin_model');
         $this->load->model('Tbl_spk_banjarmasin_model');
         $this->load->library('form_validation');
@@ -32,6 +33,7 @@ class Tbl_debit_banjarmasin extends CI_Controller
         $config['page_query_string'] = FALSE;
         $config['total_rows'] = $this->Tbl_debit_banjarmasin_model->total_rows($q);
         $tbl_debit_banjarmasin = $this->Tbl_debit_banjarmasin_model->get_all();
+        $tbl_payment_banjarmasin = $this->Tbl_payment_banjarmasin_model->get_all();
         $no_spk = $this->Tbl_debit_banjarmasin_model->get_all_induk();
         $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin pull-right">';
         $config['full_tag_close'] = '</ul>';
@@ -40,6 +42,7 @@ class Tbl_debit_banjarmasin extends CI_Controller
 
         $data = array(
             'tbl_debit_banjarmasin_data' => $tbl_debit_banjarmasin,
+            'tbl_payment_banjarmasin_data' => $tbl_payment_banjarmasin,
             'no_spk_data' => $no_spk,
             'q' => $q,
             'pagination' => $this->pagination->create_links(),

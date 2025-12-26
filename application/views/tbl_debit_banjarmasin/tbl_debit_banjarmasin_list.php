@@ -267,13 +267,74 @@ function tgl_indo($tanggal){
             </tr
             </tfoot>
         </table>
-        <div class="row">
-            <div class="col-md-6">
-                
-	    </div>
-            
+        
+        <?php 
+            if($this->session->userdata('id_user_level') != 7) {
+            echo anchor(site_url('tbl_payment_banjarmasin/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Payment Debit', 'class="btn btn-danger btn-sm"'); 
+            }
+        ?>
+
+        <table class="table table-bordered sortable table_wrapper" style="margin-bottom: 10px" id="dataTable">
+            <tr>
+                <th style="max-width :10px">No</th>
+                <th>No SPK</th>
+                <th>No Debit</th>
+                <th>Total Debit Nota</th>
+                <th>Payment</th>
+                <th>Tanggal Payment</th>
+                <th>Action</th>
+            </tr><?php
+            $totalPayment = 0;
+            $baru = 0;
+            $TotalTotal = 0;
+            foreach ($tbl_payment_banjarmasin_data as $tbl_payment_banjarmasin)
+            {
+                ?>
+                <tr>
+			<td style="max-width :10px"><?php echo ++$baru ?></td>
+			<td><?php echo $tbl_payment_banjarmasin->no_spk ?> - <?php echo $tbl_payment_banjarmasin->kode_sub ?></td>
+			<td><?php echo $tbl_payment_banjarmasin->no_debit ?></td>
+			<td><?php echo rupiah($tbl_payment_banjarmasin->total_debit_nota);
+            $TotalTotal += $tbl_payment_banjarmasin->total_debit_nota; ?></td>
+            <td><?php echo rupiah($tbl_payment_banjarmasin->jumlah_payment); 
+            $totalPayment += $tbl_payment_banjarmasin->jumlah_payment; ?></td>
+            <td><?php echo tgl_indo($tbl_payment_banjarmasin->tanggal_payment) ?></td>
+			<td style="text-align:center" width="300px">
+				<?php 
+                if($this->session->userdata('id_user_level') != 7) {
+                //echo anchor(site_url('tbl_debit_banjarmasin/read/'.$tbl_debit_banjarmasin->id_debit_banjarmasin),'<i class="fa fa-print" aria-hidden="true"></i>','class="btn btn-danger btn-sm" target="_blank"'); 				
+                //echo '  '; 
+                echo anchor(site_url('tbl_payment_banjarmasin/update/'.$tbl_payment_banjarmasin->id_payment_banjarmasin),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm"'); 
+				echo '  '; 
+                }
+                if($this->session->userdata('id_user_level') == 6) {
+				echo anchor(site_url('tbl_payment_banjarmasin/delete/'.$tbl_payment_banjarmasin->id_payment_banjarmasin),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+                }
+                ?>
+			</td>
+		</tr>
+                <?php
+            }
+            ?>
+            <tfoot>
+            <tr>
+                <th width="10px">Total</th>
+                <th></th>
+                <th></th>
+                <th><?= rupiah($TotalTotal); ?></th>
+                <th><?= rupiah($totalPayment); ?></th>
+                <th></th>
+                <th></th>
+            </tr
+            </tfoot>
+        </table>
+
+		</div>
+
         </div>
-        </div>
+
+        
+
                     </div>
             </div>
             </div>

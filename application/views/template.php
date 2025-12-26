@@ -351,6 +351,17 @@
                 })
             })
         </script>
+
+        <script>
+            $(function () {
+                $('#id_debit_banjarmasin').select2()
+            })
+        </script>
+        <script>
+            $(function () {
+                $('#id_debit_jakarta').select2()
+            })
+        </script>
          <!-- Modal -->
             <div id="myModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
