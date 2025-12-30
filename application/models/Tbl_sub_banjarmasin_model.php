@@ -167,6 +167,42 @@ class Tbl_sub_banjarmasin_model extends CI_Model
         return $this->db->get('tbl_debit_banjarmasin')->row();
     }
 
+
+    function get_total_payment_dpp($id)
+    {
+		$this->db->select('sum(tbl_payment_banjarmasin.jumlah_payment) as total');
+        $this->db->join('tbl_debit_banjarmasin', 'tbl_debit_banjarmasin.id_debit_banjarmasin=tbl_payment_banjarmasin.id_debit_banjarmasin');
+		$this->db->join('tbl_sub_banjarmasin', 'tbl_debit_banjarmasin.id_sub_banjarmasin=tbl_sub_banjarmasin.id_sub_banjarmasin');
+        $this->db->join('tbl_spk_banjarmasin', 'tbl_spk_banjarmasin.id_spk_banjarmasin=tbl_sub_banjarmasin.id_spk_banjarmasin');
+        $this->db->where('tbl_spk_banjarmasin.id_spk_banjarmasin', $id);
+
+	    if($this->uri->segment(2) == 'sampah') {
+            $this->db->where('tbl_debit_banjarmasin.hapus', 1);
+        } else {
+            $this->db->where('tbl_debit_banjarmasin.hapus', 0);
+        }
+        
+		
+        return $this->db->get('tbl_payment_banjarmasin')->row();
+    }
+
+        function get_total_payment_all()
+    {
+		$this->db->select('sum(tbl_payment_banjarmasin.jumlah_payment) as total');
+        $this->db->join('tbl_debit_banjarmasin', 'tbl_debit_banjarmasin.id_debit_banjarmasin=tbl_payment_banjarmasin.id_debit_banjarmasin');
+		$this->db->join('tbl_sub_banjarmasin', 'tbl_debit_banjarmasin.id_sub_banjarmasin=tbl_sub_banjarmasin.id_sub_banjarmasin');
+        $this->db->join('tbl_spk_banjarmasin', 'tbl_spk_banjarmasin.id_spk_banjarmasin=tbl_sub_banjarmasin.id_spk_banjarmasin');
+
+	    if($this->uri->segment(2) == 'sampah') {
+            $this->db->where('tbl_debit_banjarmasin.hapus', 1);
+        } else {
+            $this->db->where('tbl_debit_banjarmasin.hapus', 0);
+        }
+        
+		
+        return $this->db->get('tbl_payment_banjarmasin')->row();
+    }
+
 	function get_tgl_nota($id)
     {
 		$this->db->select('tbl_sub_banjarmasin.tgl_debit_nota as tanggal');

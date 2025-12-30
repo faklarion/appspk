@@ -203,70 +203,79 @@ function tgl_indo($tanggal){
             </div>
         </div>
         <h4><?php echo $filter ?></h4>
-        <table class="table table-bordered sortable table_wrapper" style="margin-bottom: 10px" id="dataTable">
-            <tr>
-                <th style="max-width :10px">No</th>
-                <th>No SPK</th>
-                <th>No Debit</th>
-                <th>Tanggal Debit Nota</th>
-                <th>Customer</th>
-                <th>Deskripsi</th>
-                <th>DPP</th>
-                <th>PPN</th>
-                <th>Total Debit Nota</th>
-                <th>Action</th>
-            </tr><?php
-            $totalDPP = 0;
-            $totalPPN = 0;
-            $TotalTotal = 0;
-            foreach ($tbl_debit_jakarta_data as $tbl_debit_jakarta)
-            {
-                ?>
-                <tr>
-			<td style="max-width :10px"><?php echo ++$start ?></td>
-			<td><?php echo $tbl_debit_jakarta->no_spk ?> - <?php echo $tbl_debit_jakarta->kode_sub ?></td>
-			<td><?php echo $tbl_debit_jakarta->no_debit ?></td>
-			<td><?php echo tgl_indo($tbl_debit_jakarta->tgl_debit_nota) ?></td>
-			<td><?php echo $tbl_debit_jakarta->customer ?></td>
-            <td><?php echo $tbl_debit_jakarta->deskripsi ?></td>
-			<td><?php echo rupiah($tbl_debit_jakarta->dpp);
-            $totalDPP += $tbl_debit_jakarta->dpp; ?></td>
-			<td><?php echo rupiah($tbl_debit_jakarta->ppn);
-            $totalPPN += $tbl_debit_jakarta->ppn; ?></td>
-			<td><?php echo rupiah($tbl_debit_jakarta->total_debit_nota);
-            $TotalTotal += $tbl_debit_jakarta->total_debit_nota; ?></td>
-			<td style="text-align:center" width="300px">
-				<?php 
-                if($this->session->userdata('id_user_level') != 7) {
-                echo anchor(site_url('tbl_debit_jakarta/read/'.$tbl_debit_jakarta->id_debit_jakarta),'<i class="fa fa-print" aria-hidden="true"></i>','class="btn btn-danger btn-sm" target="_blank"'); 				
-                echo '  '; 
-                echo anchor(site_url('tbl_debit_jakarta/update/'.$tbl_debit_jakarta->id_debit_jakarta),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm"'); 
-				echo '  '; 
-                }
-                if($this->session->userdata('id_user_level') == 6) {
-				echo anchor(site_url('tbl_debit_jakarta/delete_sampah/'.$tbl_debit_jakarta->id_debit_jakarta),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
-                }
-                ?>
-			</td>
-		</tr>
-                <?php
-            }
-            ?>
-            <tfoot>
-            <tr>
-                <th width="10px">Total</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th><?= rupiah($totalDPP); ?></th>
-                <th><?= rupiah($totalPPN); ?></th>
-                <th><?= rupiah($TotalTotal); ?></th>
-                <th></th>
-            </tr
-            </tfoot>
-        </table>
+            <table class="table table-bordered sortable"
+                id="dataTable"
+                style="width:100%; table-layout:fixed; margin-bottom:15px;">
+
+                <!-- HEADER -->
+                <thead style="display:table; width:100%; table-layout:fixed;">
+                    <tr style="background:#D9DDDC; position:sticky; top:0; z-index:3;">
+                        <th style="width:40px;text-align:center;">No</th>
+                        <th>No SPK</th>
+                        <th>No Debit</th>
+                        <th>Tanggal Debit Nota</th>
+                        <th>Customer</th>
+                        <th>Deskripsi</th>
+                        <th>DPP</th>
+                        <th>PPN</th>
+                        <th>Total Debit Nota</th>
+                        <th style="width:120px;">Action</th>
+                    </tr>
+                </thead>
+
+                <!-- BODY (SCROLL DI SINI) -->
+                <tbody style="
+                    display:block;
+                    max-height:300px;
+                    overflow-y:auto;
+                    width:100%;
+                ">
+                    <?php
+                    $totalDPP = 0;
+                    $totalPPN = 0;
+                    $TotalTotal = 0;
+                    foreach ($tbl_debit_jakarta_data as $tbl):
+                    ?>
+                    <tr style="display:table; width:100%; table-layout:fixed;">
+                        <td style="width:40px;text-align:center"><?= ++$start ?></td>
+                        <td><?= $tbl->no_spk ?> - <?= $tbl->kode_sub ?></td>
+                        <td><?= $tbl->no_debit ?></td>
+                        <td><?= tgl_indo($tbl->tgl_debit_nota) ?></td>
+                        <td><?= $tbl->customer ?></td>
+                        <td style="white-space:normal;">
+                            <?= $tbl->deskripsi ?>
+                        </td>
+                        <td><?= rupiah($tbl->dpp); $totalDPP += $tbl->dpp; ?></td>
+                        <td><?= rupiah($tbl->ppn); $totalPPN += $tbl->ppn; ?></td>
+                        <td><?= rupiah($tbl->total_debit_nota); $TotalTotal += $tbl->total_debit_nota; ?></td>
+                        <td style="width:120px;text-align:center">
+                            <?php
+                            if($this->session->userdata('id_user_level') != 7){
+                                echo anchor(site_url('tbl_debit_jakarta/read/'.$tbl->id_debit_jakarta),
+                                '<i class="fa fa-print"></i>','class="btn btn-danger btn-sm" target="_blank"');
+                                echo ' ';
+                                echo anchor(site_url('tbl_debit_jakarta/update/'.$tbl->id_debit_jakarta),
+                                '<i class="fa fa-pencil-square-o"></i>','class="btn btn-danger btn-sm"');
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+
+                <!-- FOOTER -->
+                <tfoot style="display:table; width:100%; table-layout:fixed;">
+                    <tr style="background:#f5f5f5;font-weight:bold;">
+                        <td colspan="6" style="text-align:center">Total</td>
+                        <td><?= rupiah($totalDPP) ?></td>
+                        <td><?= rupiah($totalPPN) ?></td>
+                        <td><?= rupiah($TotalTotal) ?></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+
         
         <?php 
             if($this->session->userdata('id_user_level') != 7) {
@@ -274,60 +283,70 @@ function tgl_indo($tanggal){
             }
         ?>
 
-        <table class="table table-bordered sortable table_wrapper" style="margin-bottom: 10px" id="dataTable">
-            <tr>
-                <th style="max-width :10px">No</th>
-                <th>No SPK</th>
-                <th>No Debit</th>
-                <th>Total Debit Nota</th>
-                <th>Payment</th>
-                <th>Tanggal Payment</th>
-                <th>Action</th>
-            </tr><?php
-            $totalPayment = 0;
-            $baru = 0;
-            $TotalTotal = 0;
-            foreach ($tbl_payment_jakarta_data as $tbl_payment_jakarta)
-            {
-                ?>
-                <tr>
-			<td style="max-width :10px"><?php echo ++$baru ?></td>
-			<td><?php echo $tbl_payment_jakarta->no_spk ?> - <?php echo $tbl_payment_jakarta->kode_sub ?></td>
-			<td><?php echo $tbl_payment_jakarta->no_debit ?></td>
-			<td><?php echo rupiah($tbl_payment_jakarta->total_debit_nota);
-            $TotalTotal += $tbl_payment_jakarta->total_debit_nota; ?></td>
-            <td><?php echo rupiah($tbl_payment_jakarta->jumlah_payment); 
-            $totalPayment += $tbl_payment_jakarta->jumlah_payment; ?></td>
-            <td><?php echo tgl_indo($tbl_payment_jakarta->tanggal_payment) ?></td>
-			<td style="text-align:center" width="300px">
-				<?php 
-                if($this->session->userdata('id_user_level') != 7) {
-                //echo anchor(site_url('tbl_debit_jakarta/read/'.$tbl_debit_jakarta->id_debit_jakarta),'<i class="fa fa-print" aria-hidden="true"></i>','class="btn btn-danger btn-sm" target="_blank"'); 				
-                //echo '  '; 
-                echo anchor(site_url('tbl_payment_jakarta/update/'.$tbl_payment_jakarta->id_payment_jakarta),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm"'); 
-				echo '  '; 
-                }
-                if($this->session->userdata('id_user_level') == 6) {
-				echo anchor(site_url('tbl_payment_jakarta/delete/'.$tbl_payment_jakarta->id_payment_jakarta),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
-                }
-                ?>
-			</td>
-		</tr>
-                <?php
-            }
-            ?>
-            <tfoot>
-            <tr>
-                <th width="10px">Total</th>
-                <th></th>
-                <th></th>
-                <th><?= rupiah($TotalTotal); ?></th>
-                <th><?= rupiah($totalPayment); ?></th>
-                <th></th>
-                <th></th>
-            </tr
-            </tfoot>
-        </table>
+            <table class="table table-bordered sortable"
+                style="width:100%; table-layout:fixed; margin-bottom:10px;">
+
+                <!-- HEADER -->
+                <thead style="display:table; width:100%; table-layout:fixed;">
+                    <tr style="background:#D9DDDC; position:sticky; top:0; z-index:3;">
+                        <th style="width:40px;text-align:center;">No</th>
+                        <th>No SPK</th>
+                        <th>No Debit</th>
+                        <th>Total Debit Nota</th>
+                        <th>Payment</th>
+                        <th>Tanggal Payment</th>
+                        <th style="width:120px;">Action</th>
+                    </tr>
+                </thead>
+
+                <!-- BODY (SCROLL DI SINI) -->
+                <tbody style="
+                    display:block;
+                    max-height:250px;
+                    overflow-y:auto;
+                    width:100%;
+                ">
+                    <?php
+                    $totalPayment = 0;
+                    $TotalTotal = 0;
+                    $no = 1;
+                    foreach ($tbl_payment_jakarta_data as $pay):
+                    ?>
+                    <tr style="display:table; width:100%; table-layout:fixed;">
+                        <td style="width:40px;text-align:center"><?= $no++ ?></td>
+                        <td><?= $pay->no_spk ?> - <?= $pay->kode_sub ?></td>
+                        <td><?= $pay->no_debit ?></td>
+                        <td><?= rupiah($pay->total_debit_nota); $TotalTotal += $pay->total_debit_nota; ?></td>
+                        <td><?= rupiah($pay->jumlah_payment); $totalPayment += $pay->jumlah_payment; ?></td>
+                        <td><?= tgl_indo($pay->tanggal_payment) ?></td>
+                        <td style="width:120px;text-align:center">
+                            <?php
+                            if($this->session->userdata('id_user_level') != 7){
+                                echo anchor(
+                                    site_url('tbl_payment_jakarta/update/'.$pay->id_payment_jakarta),
+                                    '<i class="fa fa-pencil-square-o"></i>',
+                                    'class="btn btn-danger btn-sm"'
+                                );
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+
+                <!-- FOOTER -->
+                <tfoot style="display:table; width:100%; table-layout:fixed;">
+                    <tr style="background:#f5f5f5;font-weight:bold;">
+                        <td colspan="3" style="text-align:center">Total</td>
+                        <td><?= rupiah($TotalTotal) ?></td>
+                        <td><?= rupiah($totalPayment) ?></td>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
+
+            </table>
+
+
 
 		</div>
 

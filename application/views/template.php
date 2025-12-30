@@ -116,7 +116,7 @@
                 <div class="pull-right hidden-xs">
                     <b>Version</b> 1.0.0
                 </div>
-                <strong>Copyright &copy; <?php echo date('Y') ?> <a href="" data-toggle="modal" data-target="#myModal">SHIELD HUMAN PROJECT</a>.</strong> All rights
+                <strong>Copyright &copy; <?php echo date('Y') ?> <a href="" data-toggle="modal" data-target="#myModal">IB Indonesia</a>.</strong> All rights
                 reserved.
             </footer>
 

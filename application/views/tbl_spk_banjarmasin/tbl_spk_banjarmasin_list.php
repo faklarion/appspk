@@ -266,6 +266,7 @@ function tgl_indo($tanggal){
                 <th>Total Payment</th>
                 <th>Sisa Payment</th>
                 <th>DPP</th>
+                <th>Sudah Terbayar</th>
                 <th>Profit 1</th>
                 <th>Profit 2</th>
                 <th>Tanggal Debit Nota</th>
@@ -318,6 +319,21 @@ function tgl_indo($tanggal){
                     $dppBaru = $listSub->total;
                     echo rupiah($dppBaru);
                 ?>
+            </td>
+            <td>
+                <?php 
+                    $listPayment = $this->Tbl_sub_banjarmasin_model->get_total_payment_dpp($tbl_spk_banjarmasin->id_spk_banjarmasin);
+                    $paymentTotal = $listPayment->total;
+                    echo rupiah($paymentTotal);
+                ?> - <?php 
+                        if($dppBaru == $paymentTotal) {
+                            echo '<button class="btn btn-success" type="button"></button>';
+                        } elseif ($dppBaru >= $paymentTotal) {
+                            echo '<button class="btn btn-warning" type="button"></button>';
+                        } elseif ($dppBaru <= $paymentTotal) {
+                            echo '<button class="btn btn-danger" type="button"></button>';
+                        }
+                    ?>
             </td>
             <td>
                 <?php echo rupiah($dppBaru - $nilaiBaru); 
@@ -453,7 +469,13 @@ function tgl_indo($tanggal){
                      $dppBaru = $listSub->total;
                      echo rupiah($dppBaru);
                     ?>
-            
+                </th>
+                <th>
+                    <?php  
+                     $allPayment = $this->Tbl_sub_banjarmasin_model->get_total_payment_all();
+                     $payment = $allPayment->total;
+                     echo rupiah($payment);
+                    ?>
                 </th>
                 <th>
                 <?php echo rupiah($dppBaru - $nilaiBaru); 

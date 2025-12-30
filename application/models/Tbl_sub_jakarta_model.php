@@ -167,6 +167,42 @@ class Tbl_sub_jakarta_model extends CI_Model
         return $this->db->get('tbl_debit_jakarta')->row();
     }
 
+
+    function get_total_payment_dpp($id)
+    {
+		$this->db->select('sum(tbl_payment_jakarta.jumlah_payment) as total');
+        $this->db->join('tbl_debit_jakarta', 'tbl_debit_jakarta.id_debit_jakarta=tbl_payment_jakarta.id_debit_jakarta');
+		$this->db->join('tbl_sub_jakarta', 'tbl_debit_jakarta.id_sub_jakarta=tbl_sub_jakarta.id_sub_jakarta');
+        $this->db->join('tbl_spk_jakarta', 'tbl_spk_jakarta.id_spk_jakarta=tbl_sub_jakarta.id_spk_jakarta');
+        $this->db->where('tbl_spk_jakarta.id_spk_jakarta', $id);
+
+	    if($this->uri->segment(2) == 'sampah') {
+            $this->db->where('tbl_debit_jakarta.hapus', 1);
+        } else {
+            $this->db->where('tbl_debit_jakarta.hapus', 0);
+        }
+        
+		
+        return $this->db->get('tbl_payment_jakarta')->row();
+    }
+
+        function get_total_payment_all()
+    {
+		$this->db->select('sum(tbl_payment_jakarta.jumlah_payment) as total');
+        $this->db->join('tbl_debit_jakarta', 'tbl_debit_jakarta.id_debit_jakarta=tbl_payment_jakarta.id_debit_jakarta');
+		$this->db->join('tbl_sub_jakarta', 'tbl_debit_jakarta.id_sub_jakarta=tbl_sub_jakarta.id_sub_jakarta');
+        $this->db->join('tbl_spk_jakarta', 'tbl_spk_jakarta.id_spk_jakarta=tbl_sub_jakarta.id_spk_jakarta');
+
+	    if($this->uri->segment(2) == 'sampah') {
+            $this->db->where('tbl_debit_jakarta.hapus', 1);
+        } else {
+            $this->db->where('tbl_debit_jakarta.hapus', 0);
+        }
+        
+		
+        return $this->db->get('tbl_payment_jakarta')->row();
+    }
+
 	function get_tgl_nota($id)
     {
 		$this->db->select('tbl_sub_jakarta.tgl_debit_nota as tanggal');
